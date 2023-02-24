@@ -10,9 +10,11 @@ type Audio = {
 const List = () => {
   const [data, setData] = useState<Audio[]>([]);
 
+  const baseUrl = process.env.BASE_URL;
+
   const getData = async () => {
     try {
-      const audio: any = await axios.get('/api/files');
+      const audio: any = await axios.get(`${baseUrl}/api/files`);
       setData(audio.data)
     } catch (error) {
       console.log(error)
