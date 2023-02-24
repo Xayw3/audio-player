@@ -1,0 +1,31 @@
+.audio_wrapper {
+  padding: 30px;
+}
+
+.audio_info {
+  color: #71829e;
+  margin-bottom: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  &:not(:last-child) {
+    border-bottom: 2px solid #71829e;
+  }
+}
+
+.audio_name {
+  font-weight: 700;
+  font-size: 20px;
+}
+
+.audio_track {
+  font-size: 20px;
+  opacity: .7;
+}
+
+.audio_duration {
+  font-size: 20px;
+  font-weight: 700;
+  opacity: .5;
+}
