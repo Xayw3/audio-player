@@ -4,7 +4,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 const { getAudioDurationInSeconds } = require("get-audio-duration");
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const folderPath = './public/audio';
+  const folderPath = './src/audio';
   const audioFiles = fs.readdirSync(folderPath);
   const data:any = [];
 
