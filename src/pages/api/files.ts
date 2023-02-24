@@ -1,7 +1,8 @@
 import fs from 'fs';
 import path from 'path';
 import { NextApiRequest, NextApiResponse } from 'next';
-const { getAudioDurationInSeconds } = require("get-audio-duration");
+import {getAudioDurationInSeconds} from 'get-audio-duration'
+// const { getAudioDurationInSeconds } = require("get-audio-duration");
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const folderPath = './src/audio';
