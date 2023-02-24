@@ -1,34 +1,26 @@
 import fs from 'fs';
-import ffprobe from 'ffprobe';
 import path from 'path';
-import ffprobeStatic from 'ffprobe-static';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { parseFile } from 'music-metadata';
+import { getAudioDurationInSeconds } from 'get-audio-duration'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const folderPath = './src/audio';
   const audioFiles = fs.readdirSync(folderPath);
   const data:any = [];
 
-  for (let file of audioFiles) {
-    const audioFilePath = path.join(folderPath, file);
-
-    const info = await ffprobe(audioFilePath, { path: ffprobeStatic.path });
-    const durationSeconds = info.streams[0].duration;
-
-    parseFile(audioFilePath)
-      .then((metadata: any) => {
-        const durationMinutes = metadata.format.duration ? metadata.format.duration / 60 : 0
-        return data.push({ name: file, duration: durationMinutes?.toFixed(2) });
-    }) 
-      .catch((err: any) => {
-        console.error(err.message);
-    });
-
-  };
-  console.log(data) 
-
- res.status(200).json(data);
+  try {
+    for (let file of audioFiles) {
+      const audioFilePath = path.join(process.cwd(), folderPath, file);
+      const duration = (await getAudioDurationInSeconds(audioFilePath)) | 0;
+      const minutes = Math.floor(duration / 60) < 10 ? `0${Math.floor(duration / 60)}` : Math.floor(duration / 60);
+      const seconds = Math.floor(duration % 60) < 10 ? `0${Math.floor(duration % 60)}` : Math.floor(duration % 60);
+      data.push({ name: file, duration: `${minutes}:${seconds}` });
+    };
+    res.status(200).json(data);
+  } catch (e) {
+    console.error(e);
+    res.status(500).send("Error reading audio files");
+  }
 };
 
 export default handler;
